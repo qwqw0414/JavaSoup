@@ -42,17 +42,21 @@ public class WpService extends ServiceAbstract implements ServiceImpl {
 //			Shap
 			List<String> shap = e.select(".sharpness span").eachAttr("style");
 
+//			option
+			String option = e.select(".option").html();
+			
 			map = new HashMap<>();
-//			map.put("name", name);
+			map.put("name", name);
 			map.put("code", code);
-//			map.put("rare", rare);
-//			map.put("a", a);
-//			map.put("c", c);
+			map.put("rare", rare);
+			map.put("a", a);
+			map.put("c", c);
 //			map.put("slot", parseSlot(slot));
+//			map.put("opt", option);
 
-			if (shap.size() == 16) {
-				map.put("shap", parseShap(shap));
-			}
+//			if (shap.size() == 16) {
+//				map.put("shap", parseShap(shap));
+//			}
 
 			list.add(map);
 			
