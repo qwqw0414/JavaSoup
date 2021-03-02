@@ -1,4 +1,4 @@
-package com.java.soup.service;
+package com.java.soup.service.wp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,11 +8,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.java.soup.service.common.ServiceAbstract;
+import com.java.soup.service.common.ServiceImpl;
+
 public class WpService extends ServiceAbstract implements ServiceImpl {
 
 	@Override
 	public void excute(Document doc) throws RuntimeException {
 
+		String type = doc.select("td.type label.active a").text();
 		Elements elmt = doc.select("table.table tbody tr");
 
 		for (Element e : elmt) {
@@ -23,9 +27,11 @@ public class WpService extends ServiceAbstract implements ServiceImpl {
 			if (name == null || name.length() == 0)
 				continue;
 
+//			final
+			int fin = Integer.parseInt(e.attr("data-final"));
+			
 //			code
-			String temp = e.select(".name a").attr("href");
-			int code = Integer.valueOf(temp.substring(temp.indexOf("=") + 1));
+			int code = getCode(e);
 
 //			R
 			int rare = Integer.parseInt(e.select(".name span").attr("class").replace("rare", ""));
@@ -47,35 +53,30 @@ public class WpService extends ServiceAbstract implements ServiceImpl {
 			
 			map = new HashMap<>();
 			map.put("name", name);
+			map.put("type", type);
 			map.put("code", code);
 			map.put("rare", rare);
-			map.put("a", a);
-			map.put("c", c);
-//			map.put("slot", parseSlot(slot));
+			map.put("attack", a);
+			map.put("critical", c);
+			map.put("fin", fin);
+			
+			int i = 0;
+			
+			for(int ii : parseSlot(slot)) {
+				map.put("slot_" + ++i, ii);
+			}
+			
 //			map.put("opt", option);
-
-//			if (shap.size() == 16) {
-//				map.put("shap", parseShap(shap));
-//			}
 
 			list.add(map);
 			
 		}
 	}
 
-	private List<Integer> parseShap(List<String> data) throws RuntimeException {
-
-		List<Integer> result = new ArrayList<>();
-
-		for (String i : data) {
-			int num = 0;
-			try {
-				num = Integer.parseInt(i.replace("width:", "").replace("px", ""));
-			} catch (NumberFormatException e) {
-			}
-			result.add(num);
-		}
-		return result;
+	public int getCode(Element e) {
+//		code
+		String temp = e.select(".name a").attr("href");
+		return Integer.valueOf(temp.substring(temp.indexOf("=") + 1));
 	}
 
 	private List<Integer> parseSlot(String data) throws RuntimeException {

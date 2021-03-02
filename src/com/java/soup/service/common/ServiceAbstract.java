@@ -1,4 +1,4 @@
-package com.java.soup.service;
+package com.java.soup.service.common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ public abstract class ServiceAbstract {
 
 	protected List<Map<String, Object>> list = new ArrayList<>();
 	protected Map<String, Object> map;
-	protected Elements elmt;
+	protected Elements element;
 	protected int cnt = 0;
 
 	protected void print(List<Object> list) throws RuntimeException {
@@ -34,7 +34,7 @@ public abstract class ServiceAbstract {
 			System.out.println(map);
 		}
 	}
-
+	
 	public List<Map<String, Object>> getList() throws RuntimeException {
 		return list;
 	}

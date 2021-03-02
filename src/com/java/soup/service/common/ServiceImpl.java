@@ -1,4 +1,4 @@
-package com.java.soup.service;
+package com.java.soup.service.common;
 
 import org.jsoup.nodes.Document;
 

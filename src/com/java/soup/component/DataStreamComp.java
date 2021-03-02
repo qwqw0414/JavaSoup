@@ -47,7 +47,7 @@ public class DataStreamComp {
 
 	public void save(String fileName, List<Object> list) throws RuntimeException {
 
-		String path = ROOT_PATH + fileName + ".txt";
+		String path = ROOT_PATH + fileName + ".sql";
 		BufferedWriter bw = null;
 		
 		try {

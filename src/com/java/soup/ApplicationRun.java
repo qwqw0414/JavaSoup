@@ -23,9 +23,10 @@ public class ApplicationRun {
 	}
 
 	public void run() {
-//		sc.mon();
+		sc.mon();
 //		sc.arm();
-		sc.wp();
+//		sc.wpElmt();
+//		sc.sk();
 	}
 
 }

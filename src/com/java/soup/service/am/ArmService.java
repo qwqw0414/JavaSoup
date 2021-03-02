@@ -1,4 +1,4 @@
-package com.java.soup.service;
+package com.java.soup.service.am;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +8,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.java.soup.component.PropertiesComp;
+import com.java.soup.service.common.ServiceAbstract;
+import com.java.soup.service.common.ServiceImpl;
+import com.sun.xml.internal.stream.buffer.sax.Properties;
+
 public class ArmService extends ServiceAbstract implements ServiceImpl {
 
+	private List<String> resList = new PropertiesComp().getList("option.reselmt");
+	
 	@Override
 	public void excute(Document doc) throws RuntimeException {
 		Elements elmt = doc.select("table.table tbody tr");
@@ -29,6 +36,10 @@ public class ArmService extends ServiceAbstract implements ServiceImpl {
 //			type
 			String type = e.select("td.type").text();
 
+//			R
+			int rare = Integer.parseInt(e.select(".name span").attr("class").replace("rare", ""));
+
+			
 //			def
 			String def = e.select("td.defense").text();
 
@@ -45,16 +56,25 @@ public class ArmService extends ServiceAbstract implements ServiceImpl {
 			map.put("code", code);
 			map.put("name", name);
 			map.put("type", type);
+			map.put("rare", rare);
 			map.put("def", def);
-			map.put("slot", parseSlot(slot));
-			map.put("elm", parseElmt(elm));
+			
+			{
+				int i = 0;
+				for(int ii : parseSlot(slot)) {
+					map.put("slot_" + ++i, ii);
+				}
+			}
+			
+			List<Integer> elmtList = parseElmt(elm);
+			for(int i = 0; i < resList.size(); i++) {
+				map.put(resList.get(i), elmtList.get(i));
+			}
+			
 //			map.put("opt", parseOtp(opt));
 
 			list.add(map);
 		}
-
-		print();
-		count();
 
 	}
 
