@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -45,6 +46,32 @@ public class DataStreamComp {
 		return doc;
 	}
 
+	public void writeList(String fileName, List<Map<String, Object>> list) throws RuntimeException {
+		String path = ROOT_PATH + fileName + ".txt";
+		BufferedWriter bw = null;
+		
+		try {
+
+			bw = new BufferedWriter(new FileWriter(path));
+
+			for (Object str : list) {
+				bw.write(str + "\n");
+			}
+			
+			bw.flush();
+			
+			System.out.println(">> Save File : " + path);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			try {
+				bw.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+	
 	public void save(String fileName, List<Object> list) throws RuntimeException {
 
 		String path = ROOT_PATH + fileName + ".sql";
